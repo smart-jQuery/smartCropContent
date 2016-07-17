@@ -1,70 +1,38 @@
-<h1>Smart Crop Text Plugin</h1>
+# Smart Crop Content Plugin
 
-<p>Обрезает текст до определенной длины сохраняя при этом его HTML оформление. То есть, Вы с легкостью можете обрезать контент имеющий ссылки, списки и даже таблицы.</p>
-</br>
+**v 1.1.0**
 
-<h2>API Plugin</h2>
+Обрезает контент до определенной длины сохраняя при этом его HTML оформление. То есть, Вы с легкостью можете обрезать контент имеющий ссылки, списки и даже таблицы.
 
-<table>
-	<thead>
-		<tr>
-			<td>Название</td>
-			<td>По-умолчанию</td>
-			<td>Описание</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>length</td>
-			<td>200</td>
-			<td>Длина до которой необходимо выполнить обрезку</td>
-		</tr>
-		<tr>
-			<td>more</td>
-			<td>Показать еще</td>
-			<td>Текст кнопки, показывающий полный текст</td>
-		</tr>
-		<tr>
-			<td>less</td>
-			<td>Скрыть</td>
-			<td>Текст кнопки, показывающий только обрезанный текст</td>
-		</tr>
-		<tr>
-			<td>ending</td>
-			<td>...</td>
-			<td>Окончание добавляемое к обрезанному тексту</td>
-		</tr>
-		<tr>
-			<td>html</td>
-			<td>true</td>
-			<td>Сохраняет HTML оформление текста</td>
-		</tr>
-	</tbody>
-</table>
-</br>
+Examples: [https://jsfiddle.net/jquery_smart/9Lx8opuk/](https://jsfiddle.net/jquery_smart/9Lx8opuk/)
 
-<h2>Use Plugin</h2>
+## API Plugin
 
-<p>Использование в javaScript:</p>
+Название | По-умолчанию | Тип | Описание | data-атрибут
+-------- | ------------ | --- | -------- | ------------
+length | 200 | number | Длина обрезаемого контента | data-crop-length
+more | Show more | string | Текст кнопки, показывающий полный текст | data-crop-more
+less | Hide | string | Текст кнопки, показывающий обрезанный текст | data-crop-less
+ending | ... | string | Окончание добавляемое к обрезанному тексту | data-crop-ending
+html | true | boolean | true - сохраняет HTML при обрезании<br>false - удаляет HTML при обрезании | data-crop-html
+hiddenTags | false | boolean | false - не обращать внимания на скрытые элементы | data-crop-hidden-tags
 
-<pre>
-<code>
-	$('.content').smartCropText({
-		length: 250,
-		more: 'Подробнее'
-	});
-</code>
-</pre>
+## Usage Plugin
 
-<p>Использование через data-атрибуты:</p>
+**Использование в javaScript:**
+```
+$('.content').smartCropText({
+	length: 50,
+});
+```
+---
+**Использование через data-атрибуты:**
+```
+<div data-crop-length="50">
+    <p>
+        <b><span style="color: #489219;">Lorem ipsum</span></b> dolor sit amet, consectetur adipiscing elit.
+    </p>
+</div>
+```
 
-<pre>
-<code>
-	&lt;div class="content" data-plugin="sct" data-length="50"&gt;
-		&lt;strong&gt;Lorem Ipsum&lt;/strong&gt; - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
-	&lt;/div&gt;
-</code>
-</pre>
-
-</br>
-<p>Замечания и предложения направляйте на <a href="mailto:smart-jquery@mail.ru">smart-jquery@mail.ru</a></p>
+Замечания и предложения присылайте на [jquery.smart@gmail.com](mailto:jquery.smart@gmail.com)
