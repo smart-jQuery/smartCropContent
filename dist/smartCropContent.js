@@ -1,16 +1,16 @@
 /*
- * jQuery plugin smartCropContent v 1.0.0
+ * jQuery plugin smartCropContent v 1.1.0
  * https://github.com/smart-jQuery/smartCropContent
  * _____________________________________________
  *
  * Author: Pavel Astashkin <jquery.smart@gmail.com>
  */
 
-(function($) {
+;(function($) {
 	'use strict';
 
 	/**
-	 * Конструктор SmartCropContent
+	 * Constructor
 	 *
 	 * @param {object} element
 	 * @param {object} options
@@ -19,25 +19,27 @@
 	var SmartCropContent = function(element, options) {
 		this.options     = $.extend({}, SmartCropContent.DEFAULT_OPTIONS, options);
 		this.$element    = $(element);
-		this.moreContent = '';
-		this.lessContent = '';
+		this.moreContent = null;
+		this.lessContent = null;
+		this.tagsNotCrop = ['tr', 'li'];
 
-		this.$template         = $('<div class="container-scc"><div class="content-scc"></div></div>');
-		this.$smartCropContent = $('.content-scc', this.$template);
+		this.$template = $('<div class="container-crop"><div class="content-crop"></div></div>');
+		this.$content  = $('.content-crop', this.$template);
 
 		this.init();
 	};
 
 	SmartCropContent.DEFAULT_OPTIONS = {
-		length: 200,
-		more:   'Показать еще',
-		less:   'Скрыть',
-		ending: '...',
-		html:   true
+		length:     200,
+		more:       'Show more',
+		less:       'Hide',
+		ending:     '...',
+		html:       true,
+		hiddenTags: false
 	};
 
 	/**
-	 * Инициализация работы плагина
+	 * Initialization
 	 */
 	SmartCropContent.prototype.init = function() {
 		this.$element.html(function(index, value) {
@@ -51,84 +53,126 @@
 		}
 
 		this.moreContent = this.$element.html();
-		this.cropHTML(this.$smartCropContent[0], this.$element[0].childNodes);
-		this.lessContent = this.$smartCropContent.html();
 
+		if(this.options.length < this.$element.text().length) {
+			this.cropHTML(this.$content[0], this.$element[0].childNodes);
 
-		if(this.moreContent.length > this.lessContent.length) {
-			this.lessContent += this.options.ending;
-			this.$smartCropContent.html(this.lessContent);
-			this.drawBtn();
+			this.addEnding(this.$content[0]);
+
+			this.lessContent = this.$content.html();
+
+			this.addBtn();
+		} else {
+			this.$content.html(this.moreContent);
 		}
 
 		this.$element.html(this.$template);
 	};
 
 	/**
-	 * Обрезаем контент(HTML) путем перебора узлов
+	 * Parse html
 	 *
 	 * @param {object} parentNode
 	 * @param {object} nodes
 	 */
 	SmartCropContent.prototype.cropHTML = function(parentNode, nodes) {
 		for(var n = 0; nodes.length > n; n++) {
-			if(this.options.length <= 0) return;
+			var node = nodes[n];
 
-			var node      = nodes[n];
+			if(this.options.length <= 0 && node.textContent.length) return;
+
+			if(this.options.hiddenTags == false && $(node).is(':hidden')) continue;
+
 			var childNode = parentNode.appendChild(node.cloneNode(false));
 
-			if(node.childNodes.length) {
-				this.cropHTML(childNode, node.childNodes);
-			} else {
-				this.cropText(childNode);
+			if(node.textContent.length) {
+
+				if(this.options.length <= node.textContent.length && $.inArray(node.nodeName.toLowerCase(), this.tagsNotCrop) != -1) {
+					this.options.length = node.textContent.length;
+					this.addEnding(this.$content[0]);
+				}
+
+				if(node.childNodes.length) {
+					this.cropHTML(childNode, node.childNodes);
+				} else {
+					this.cropText(childNode);
+				}
 			}
+
 		}
 	};
 
 	/**
-	 * Обрезаем текстовый узел, если он является концом
+	 * Crop text node
 	 *
 	 * @param {object} textNode
 	 */
 	SmartCropContent.prototype.cropText = function(textNode) {
-		var indexSpace = textNode.textContent.indexOf(' ', this.options.length - 1);
+		var isLastTextNode = this.options.length - textNode.textContent.length <= 0;
 
-		if(indexSpace != 0 && indexSpace != -1) {
-			textNode.textContent = textNode.textContent.slice(0, indexSpace);
+		if(isLastTextNode) {
+			var indexSpace = textNode.textContent.indexOf(' ', this.options.length - 1);
+
+			if(indexSpace != -1) {
+				textNode.textContent = textNode.textContent.slice(0, indexSpace + 1);
+			}
 		}
 
 		this.options.length -= textNode.textContent.length;
 
-		if(this.options.length <= 0) {
+		if(isLastTextNode) {
 			textNode.textContent = textNode.textContent.replace(/\s+$/, '');
+			this.addEnding(textNode.parentNode);
 		}
 	};
 
 	/**
-	 * Создаем кнопку "показать/скрыть"
+	 * Add an ending to the cropped content
+	 *
+	 * @param node
 	 */
-	SmartCropContent.prototype.drawBtn = function() {
+	SmartCropContent.prototype.addEnding = function(node) {
+		if(!this.options.ending) return;
+
+		$('<span/>', {
+			class: 'ending-crop',
+			html:  this.options.ending
+		}).appendTo($(node));
+
+		this.options.ending = '';
+	};
+
+	/**
+	 * Add button "show/hide"
+	 */
+	SmartCropContent.prototype.addBtn = function() {
+		if(!this.options.more) return;
+
 		var self = this;
 
 		$('<a/>', {
 			href:  '#',
-			class: 'btn-scc',
+			class: 'btn-crop',
 			html:  self.options.more
 		})
-			.insertAfter(self.$smartCropContent)
+			.insertAfter(self.$content)
 			.click(function() {
 				var $this = $(this);
 
 				if($this.html() == self.options.more) {
 					$this.html(self.options.less);
-					self.$smartCropContent.html(self.moreContent);
+					self.$content.html(self.moreContent);
+					self.$template.removeClass('closed-crop').addClass('opened-crop');
 				} else {
 					$this.html(self.options.more);
-					self.$smartCropContent.html(self.lessContent);
+					self.$content.html(self.lessContent);
+					self.$template.removeClass('opened-crop').addClass('closed-crop');
 				}
 
 				return false;
 			});
+
+		self.$template.addClass('closed-crop');
 	};
 
 	/**
@@ -136,16 +180,25 @@
 	 */
 	$.fn.smartCropContent = function(options) {
 		return this.each(function() {
-			if(!$(this).data('length')) new SmartCropContent(this, options);
+			if(!$(this).data('crop-length')) new SmartCropContent(this, options);
 		})
 	};
 
 	/**
-	 * USE DATA-API
+	 * DATA-API
 	 */
 	$(function() {
-		$('[data-length]').each(function() {
-			new SmartCropContent(this, $(this).data());
+		$('[data-crop-length]').each(function() {
+			//new SmartCropContent(this, $(this).data());
+			var $this = $(this);
+			new SmartCropContent(this, {
+				length:     $this.data('crop-length'),
+				more:       $this.data('crop-more'),
+				less:       $this.data('crop-less'),
+				ending:     $this.data('crop-ending'),
+				html:       $this.data('crop-html'),
+				hiddenTags: $this.data('crop-hidden-tags')
+			});
 		});
 	});
 
