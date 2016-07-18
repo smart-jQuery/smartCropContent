@@ -1,0 +1,16 @@
+{
+  "name": "smart-crop-content",
+  "version": "1.1.0",
+  "main": "dist/smartCropContent.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*"
+  ],
+  "devDependencies": {},
+  "keywords": [
+    "crop",
+    "truncate",
+    "content",
+    "text"
+  ]
+}

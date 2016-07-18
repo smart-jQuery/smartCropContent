@@ -2,14 +2,14 @@
 
 **v 1.1.0**
 
-Plugin crops content to a needed length saving HTML tags. With this you can easily crop content having hypertext references, lists and even tables.
+Обрезает контент до определенной длины, сохраняя при этом его HTML-оформление. То есть, вы с легкостью можете обрезать контент, имеющий ссылки, списки и даже таблицы.
 
-Examples: [https://jsfiddle.net/jquery_smart/9Lx8opuk/](https://jsfiddle.net/jquery_smart/9Lx8opuk/)
+Примеры: [https://jsfiddle.net/jquery_smart/9Lx8opuk/](https://jsfiddle.net/jquery_smart/9Lx8opuk/)
 
 ## API Plugin
 
-Name     | Default      | Type| Description | data-attribute
--------- | ------------ | --- | ----------- | --------------
+Название | По умолчанию | Тип | Описание | data-атрибут
+-------- | ------------ | --- | -------- | ------------
 length | 200 | number | Длина обрезаемого контента | data-crop-length
 more | Show more | string | Текст кнопки, показывающей полный текст | data-crop-more
 less | Hide | string | Текст кнопки, показывающей обрезанный текст | data-crop-less
@@ -19,14 +19,14 @@ hiddenTags | false | boolean | false - не учитывать скрытые э
 
 ## How to use the Plugin
 
-**Using in js:**
+**Использование в javaScript:**
 ```
 $('.content').smartCropContent({
 	length: 50
 });
 ```
 ---
-**Using via data-attributes**
+**Использование через data-атрибуты:**
 ```
 <div data-crop-length="50">
     <p>
@@ -37,4 +37,4 @@ $('.content').smartCropContent({
 
 ---
 
-Please sent your feedback to [jquery.smart@gmail.com](mailto:jquery.smart@gmail.com)
+Замечания и предложения присылайте на [jquery.smart@gmail.com](mailto:jquery.smart@gmail.com)
