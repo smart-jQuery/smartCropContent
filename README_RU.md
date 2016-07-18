@@ -6,7 +6,13 @@
 
 Примеры: [https://jsfiddle.net/jquery_smart/9Lx8opuk/](https://jsfiddle.net/jquery_smart/9Lx8opuk/)
 
-## API Plugin
+## Installation
+```
+bower install smart-crop-content
+```
+или скачайте файл smartCropContent.js из текущего репозитория.
+
+## API
 
 Название | По умолчанию | Тип | Описание | data-атрибут
 -------- | ------------ | --- | -------- | ------------
@@ -17,7 +23,7 @@ ending | ... | string | Окончание, добавляемое к обрез
 html | true | boolean | true - сохраняет HTML при обрезке<br>false - удаляет HTML при обрезке | data-crop-html
 hiddenTags | false | boolean | false - не учитывать скрытые элементы | data-crop-hidden-tags
 
-## How to use the Plugin
+## How to use
 
 **Использование в javaScript:**
 ```

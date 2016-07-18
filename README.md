@@ -6,18 +6,24 @@ Plugin crops content to a needed length saving HTML tags. With this you can easi
 
 Examples: [https://jsfiddle.net/jquery_smart/9Lx8opuk/](https://jsfiddle.net/jquery_smart/9Lx8opuk/)
 
-## API Plugin
+## Installation
+```
+bower install smart-crop-content
+```
+or just download smartCropContent.js from the git repository.
+
+## API
 
 Name     | Default      | Type| Description | data-attribute
 -------- | ------------ | --- | ----------- | --------------
-length | 200 | number | Длина обрезаемого контента | data-crop-length
-more | Show more | string | Текст кнопки, показывающей полный текст | data-crop-more
-less | Hide | string | Текст кнопки, показывающей обрезанный текст | data-crop-less
-ending | ... | string | Окончание, добавляемое к обрезанному тексту | data-crop-ending
-html | true | boolean | true - сохраняет HTML при обрезке<br>false - удаляет HTML при обрезке | data-crop-html
-hiddenTags | false | boolean | false - не учитывать скрытые элементы | data-crop-hidden-tags
+length | 200 | number | The length for which content is to be cropped | data-crop-length
+more | Show more | string | Caption of the button, showing the source text | data-crop-more
+less | Hide | string | Caption of the button, showing the cropped text | data-crop-less
+ending | ... | string | Ending which is to be added to the cropped text | data-crop-ending
+html | true | boolean | true - save HTML tags<br>false - delete HTML tags when cropping | data-crop-html
+hiddenTags | false | boolean | false - skip hidden items | data-crop-hidden-tags
 
-## How to use the Plugin
+## How to use
 
 **Using in js:**
 ```
